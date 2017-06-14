@@ -1,0 +1,38 @@
+SELECT name, year FROM movies WHERE year=1902 AND rank>5;
+SELECT name, year FROM movies WHERE year=1977;
+SELECT name, year, COUNT(*) FROM movies WHERE year=1982 GROUP BY year;
+SELECT name FROM movies WHERE year=1977;
+SELECT last_name FROM actors WHERE last_name LIKE '%stack';
+SELECT first_name, COUNT(*) FROM actors GROUP BY first_name ORDER BY COUNT(*) DESC LIMIT 10;
+SELECT last_name, COUNT(*) FROM actors GROUP BY last_name ORDER BY COUNT(*) DESC LIMIT 10;
+
+//SELECT first_name, last_name, COUNT(role) FROM actors JOIN roles ON actors.id = roles.actor_id GROUP BY role ORDER BY COUNT(*) DESC LIMIT 100;
+
+SELECT first_name, last_name, COUNT(*) FROM roles JOIN actors ON actor_id = actors.id GROUP BY actor_id ORDER BY COUNT(*) DESC LIMIT 100;
+SELECT genre, COUNT(*) FROM movies_genres GROUP BY genre ORDER BY COUNT(*) ASC;
+
+SELECT first_name, last_name FROM actors
+JOIN roles
+ON actors.id = roles.actor_id
+JOIN movies
+ON movies.id = roles.movie_id
+WHERE movies.name = 'Braveheart'
+ORDER BY actors.last_name
+ASC;
+
+// Leap Noir:
+
+SELECT directors.first_name, directors.last_name, movies.name, movies.year
+FROM movies
+JOIN directors
+ON movies.id = directors.id
+JOIN roles
+ON movies_genres.movie_id = roles.movie_id
+JOIN movies_genres
+ON roles.movie_id = movies_genres.movie_id
+WHERE movies_genres.genre = 'Film Noir'
+ORDER BY movies.name
+ASC;
+
+// Bacon
+
