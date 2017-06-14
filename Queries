@@ -23,16 +23,90 @@ ASC;
 // Leap Noir:
 
 SELECT directors.first_name, directors.last_name, movies.name, movies.year
-FROM movies
-JOIN directors
-ON movies.id = directors.id
-JOIN roles
-ON movies_genres.movie_id = roles.movie_id
+FROM roles
 JOIN movies_genres
 ON roles.movie_id = movies_genres.movie_id
-WHERE movies_genres.genre = 'Film Noir'
+JOIN directors
+ON roles.actor_id = directors.id
+JOIN movies
+ON movies.id = movies_genres.movie_id
+WHERE movies_genres.genre = 'Film-Noir'
 ORDER BY movies.name
 ASC;
 
+//Solution:
+SELECT *
+FROM movies AS m
+  INNER JOIN movies_genres AS mg
+    ON m.id = mg.movie_id
+    AND mg.genre = 'Film-Noir'
+      INNER JOIN movies_directors AS md ON m.id = md.movie_id
+        INNER JOIN directors AS d ON md.director_id = d.id;
+WHERE year % 4 = 0
+ORDER BY m.name ASC;
+
 // Bacon
+
+SELECT genre, first_name, last_name
+FROM movies_genres
+WHERE movies_genres.genre = 'Drama'
+JOIN roles
+ON movie_id = roles.movie_id
+WHERE roles.actor_id = id
+JOIN actors
+ON actor_id = actors.id
+WHERE actors.first_name = 'Kevin'
+WHERE actors.last_name = 'Bacon'
+ORDER BY actors.last_name;
+
+Solution:
+
+SELECT *, a.first_name || " " || a.last_name AS full_name
+FROM actors AS a
+  INNER JOIN roles AS r ON r.actor_id = a.id
+  INNER JOIN movies AS m ON r.movie_id = m.id
+  INNER JOIN movies_genres AS mg ON mg.movie_id = m.id;
+    ON mg.movie_id = m.id
+    AND mg.genre = 'Drama'
+WHERE m.id IN (
+  SELECT m2.id
+  FROM movies AS m2
+    INNER JOIN roles AS r2 ON r2.movie_id = m2.id
+    INNER JOIN actors AS a2
+      ON r2.actor_id = a2.id
+      AND a2.first_name = 'Kevin'
+      AND a2.last_name = 'Bacon'
+)
+AND full_name != 'Kevin Bacon'
+ORDER BY a.last_name ASC;
+
+// IMMORTALS
+
+actors
+roles
+movies
+
+SELECT actors.id, actors.first_name, actors.last_name
+FROM actors
+  INNER JOIN roles ON roles.actor_id = actors.id
+  INNER JOIN movies ON movies.id = roles.movie_id
+WHERE movies.year < 1900;
+INTERSECT
+SELECT actors.id, actors.first_name, actors.last_name
+FROM actors
+  INNER JOIN roles ON roles.actor_id = actors.id
+  INNER JOIN movies ON movies.id = roles.movie_id
+WHERE movies.year > 2000;
+
+
+// BUSY FILMING
+
+
+
+
+
+
+
+
+
 
